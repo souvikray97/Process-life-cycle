@@ -167,7 +167,7 @@
 .panel-title {
   font-size: 1.125rem; /* text-lg */
   line-height: 1.75rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 @media (min-width: 640px) {
   .panel-title {
@@ -176,10 +176,13 @@
   }
 }
 
+/* Weight ladder widened (800 / 700 / 500) so the three tiers separate by weight
+   without changing any font-size — sizes drive the meticulously tuned fixed-height
+   layout, so hierarchy comes from weight + colour instead (Refactoring-UI item 6). */
 .subsection-title {
   font-size: 0.875rem; /* text-sm */
   line-height: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 @media (min-width: 640px) {
   .subsection-title {
