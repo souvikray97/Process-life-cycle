@@ -159,8 +159,8 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
 
         <TabsContent value="scenarios" className="space-y-4">
           <Card>
-            <CardHeader className="pb-4">
-              <CardTitle className="panel-title flex flex-col sm:flex-row sm:items-center gap-2">
+            <CardHeader>
+              <CardTitle className="panel-title flex flex-wrap items-center gap-2">
                 <GraduationCap className="h-5 w-5 flex-shrink-0" />
                 <span>Process Life Cycle Evaluation</span>
                 <TooltipProvider>
@@ -344,8 +344,8 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
 
         <TabsContent value="results" className="space-y-4">
           <Card>
-            <CardHeader className="pb-4">
-              <CardTitle className="panel-title flex flex-col sm:flex-row sm:items-center gap-2">
+            <CardHeader>
+              <CardTitle className="panel-title flex flex-wrap items-center gap-2">
                 <Award className="h-5 w-5 flex-shrink-0" />
                 <span>Evaluation Results</span>
                 <TooltipProvider>
@@ -361,15 +361,10 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-              </CardTitle>
-              <div className="flex items-center justify-between">
-                <p className="text-muted-foreground text-sm">
-                  Comprehensive performance analysis across all completed scenarios.
-                </p>
                 {evaluationResults.length > 0 && (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm" className="h-7 text-xs gap-1 flex-shrink-0" aria-label="Export evaluation results">
+                      <Button variant="outline" size="sm" className="ml-auto h-7 text-xs gap-1 flex-shrink-0" aria-label="Export evaluation results">
                         <Download className="h-3 w-3" />
                         Export
                       </Button>
@@ -384,7 +379,7 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
                     </DropdownMenuContent>
                   </DropdownMenu>
                 )}
-              </div>
+              </CardTitle>
             </CardHeader>
           </Card>
 
@@ -519,9 +514,6 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
                   </Tooltip>
                 </TooltipProvider>
               </CardTitle>
-              <p className="text-muted-foreground text-sm">
-                Detailed analytics for instructors to track student progress and identify learning gaps.
-              </p>
             </CardHeader>
             <CardContent>
               {evaluationResults.length === 0 ? (
