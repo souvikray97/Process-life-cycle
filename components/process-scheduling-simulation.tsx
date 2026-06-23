@@ -54,19 +54,19 @@ const EVENT_CATALOG: Array<{
     name: "create_request",
     type: "external",
     description: "A request to admit a new process. Acting on it moves the process into the Ready queue.",
-    color: "bg-purple-50 text-purple-800 border-purple-200",
+    color: "bg-sky-100 text-sky-800 border-sky-200",
   },
   {
     name: "io_needed",
     type: "internal",
     description: "A running process requests I/O. It enables the CPU → I/O Wait transition.",
-    color: "bg-blue-100 text-blue-800 border-blue-200",
+    color: "bg-yellow-100 text-yellow-800 border-yellow-200",
   },
   {
     name: "io_done",
     type: "internal",
     description: "An I/O operation has completed. It enables the I/O Wait → Ready transition.",
-    color: "bg-blue-100 text-blue-800 border-blue-200",
+    color: "bg-yellow-100 text-yellow-800 border-yellow-200",
   },
   {
     name: "terminate",
@@ -260,16 +260,18 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
     }
   }
 
+  // Each event is tinted with the colour of the process state it relates to, using the same
+  // state colour tokens as the lanes: create_request → Ready (sky), io_needed/io_done → I/O
+  // (yellow), terminate → Terminated (red).
   const getEventColor = (event: SimulationEvent) => {
-    if (event.name === "create_request") {
-      return "bg-purple-50 text-purple-800 border-purple-200"
-    }
-
-    switch (event.type) {
-      case "external":
+    switch (event.name) {
+      case "create_request":
+        return "bg-sky-100 text-sky-800 border-sky-200"
+      case "io_needed":
+      case "io_done":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200"
+      case "terminate":
         return "bg-red-100 text-red-800 border-red-200"
-      case "internal":
-        return "bg-blue-100 text-blue-800 border-blue-200"
       default:
         return "bg-gray-100 text-gray-800 border-gray-200"
     }
