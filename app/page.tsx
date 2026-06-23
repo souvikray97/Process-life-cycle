@@ -167,7 +167,7 @@ export default function OSVirtualLab() {
                   <p>
                     A sequence of step-by-step guided lessons. Each step pairs an instruction with a
                     knowledge check and live simulation, building from a single process through I/O,
-                    preemption and multi-process scheduling.
+                    preemption and managing multiple processes.
                   </p>
                 </TooltipContent>
               </Tooltip>

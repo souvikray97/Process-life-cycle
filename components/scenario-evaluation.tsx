@@ -161,7 +161,7 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
           <Card>
             <CardHeader className="pb-4">
               <CardTitle className="panel-title flex flex-col sm:flex-row sm:items-center gap-2">
-                <GraduationCap className="h-6 w-6 flex-shrink-0" />
+                <GraduationCap className="h-5 w-5 flex-shrink-0" />
                 <span>Process Life Cycle Evaluation</span>
                 <TooltipProvider>
                   <Tooltip>
@@ -345,7 +345,7 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
         <TabsContent value="results" className="space-y-4">
           <Card>
             <CardHeader className="pb-4">
-              <CardTitle className="flex flex-col sm:flex-row sm:items-center gap-2 text-lg sm:text-xl">
+              <CardTitle className="panel-title flex flex-col sm:flex-row sm:items-center gap-2">
                 <Award className="h-5 w-5 flex-shrink-0" />
                 <span>Evaluation Results</span>
                 <TooltipProvider>
