@@ -308,17 +308,6 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
               <CardTitle className="subsection-title flex items-center gap-2">
                 <Activity className="h-4 w-4 flex-shrink-0" />
                 <span>Controls</span>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>
-                      These controls drive the sandbox. The clock can be advanced or reverted, processes can be
-                      created, and a selected process can be moved between life-cycle states.
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -418,7 +407,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 <span>Event Catalog</span>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                    <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
                     <p>
@@ -492,7 +481,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   <span className="break-words">Process Life Cycle Sandbox</span>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p>
@@ -524,7 +513,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                     <h3 className="subsection-title">Event Requests</h3>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                        <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>
@@ -573,7 +562,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                     <h3 className="subsection-title">Valid Transitions</h3>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                        <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs">
                         <p>
@@ -599,7 +588,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                     <h3 className="subsection-title">Processes and Current State</h3>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                        <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>
@@ -703,7 +692,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   <span className="break-words">Metrics & Log</span>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p>
@@ -733,7 +722,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   State Presence (Relative)
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p>Relative time each process has spent in each state, measured in simulation ticks. This is a qualitative indicator, not a performance measure.</p>
@@ -787,14 +776,6 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
               <div className="space-y-2">
                 <div className="item-label flex items-center gap-2">
                   Action Log
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>A chronological record of user actions and system events.</p>
-                    </TooltipContent>
-                  </Tooltip>
                 </div>
                 <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-1 action-log-container rounded-lg p-2 bg-gray-50">
                   {simulationState.actionLog.length === 0 ? (
@@ -835,7 +816,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 System States
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                    <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
                     <p>A record of each process's transition history and of every invalid transition that has been attempted.</p>

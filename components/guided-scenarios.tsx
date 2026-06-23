@@ -1826,7 +1826,7 @@ export function GuidedScenarios({
               Excellent work! You have successfully completed the <strong>{selectedScenario.title}</strong> guided
               scenario.
             </p>
-            <p className="text-muted-foreground">
+            <p className="text-green-700">
               Time taken: {Math.floor(elapsedTime / 60)}m {elapsedTime % 60}s
             </p>
 
@@ -1839,7 +1839,7 @@ export function GuidedScenarios({
                 </AlertDescription>
               </Alert>
             ) : (
-              <p className="text-muted-foreground">
+              <p className="text-green-700">
                 Progress: {completedScenarios.length} of {GUIDED_SCENARIOS.length} scenarios completed
               </p>
             )}
@@ -1889,17 +1889,17 @@ export function GuidedScenarios({
                   <BookOpen className="h-5 w-5 flex-shrink-0" />
                   {selectedScenario.title}
                 </CardTitle>
-                <p className="text-sm text-muted-foreground mt-1">{selectedScenario.description}</p>
+                <p className="text-sm text-green-700 mt-1">{selectedScenario.description}</p>
               </div>
               <div className="text-left sm:text-right flex-shrink-0">
                 <div className="text-xl sm:text-2xl font-bold text-green-600">
                   {Math.floor(elapsedTime / 60)}:{String(elapsedTime % 60).padStart(2, "0")}
                 </div>
-                <div className="text-xs sm:text-sm text-muted-foreground">Elapsed Time</div>
+                <div className="text-xs sm:text-sm text-green-700">Elapsed Time</div>
               </div>
             </div>
             <Progress value={progress} className="mt-2" />
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-green-700">
               Step {currentStep + 1} of {selectedScenario.steps.length}
             </div>
           </CardHeader>
@@ -1935,7 +1935,7 @@ export function GuidedScenarios({
 
             {/* Instruction */}
             <Alert className="border-blue-200 bg-blue-50">
-              <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+              <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 flex-shrink-0" />
               <AlertDescription className="text-blue-800">
                 <strong>Instructions:</strong>
                 {currentStepData.instructionBullets ? (
@@ -2109,7 +2109,7 @@ export function GuidedScenarios({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                  <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>

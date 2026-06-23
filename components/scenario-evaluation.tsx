@@ -166,7 +166,7 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p>
@@ -351,7 +351,7 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p>
@@ -503,7 +503,7 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 cursor-help flex-shrink-0" />
+                      <Info className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground cursor-help flex-shrink-0" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p>
