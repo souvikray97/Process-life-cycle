@@ -323,3 +323,61 @@ Colors must exactly match the project's state colors (Ready/blue, CPU/green, I/O
 6. Passing build/lint (and tests if present), plus a concise per-item changelog.
 
 Ask before changing the scenario schema in a way that affects persisted/saved state, or before removing state that has other consumers.
+
+---
+
+## Round 3 — Refactoring-UI Visual Pass + Drag-and-Drop
+
+A visual refactor based on *Refactoring UI* (see `REFACTORING-UI-REVIEW.md`), applied one item at a time. Each item was verified loop-free under a hard memory cap (`systemd-run --user --scope -p MemoryMax=2G -p MemorySwapMax=0`) before committing, because an earlier attempt at items 1–2 had caused a system-wide OOM. Production builds stayed bounded (~650 MB) throughout.
+
+> **Note on the dev-mode OOM:** `next dev` (Turbopack) for this `-exp` checkout balloons past 6 GB on first compile and is OOM-killed — but this is **pre-existing**. The base commit (`90d0745`, before any of these changes) reproduces it identically, and every production `next build` succeeds at ~650 MB. The refactor is not the cause. Use a production build (`next build` + `next start`) to preview.
+
+### 1. Use fewer borders
+Collapsed the three-deep border nesting in the Sandbox (Card border → inner gray box → dashed drop zone) down to **one separation method per level**: the Card keeps its border, lanes / event queue / action log / metric boxes keep `bg-gray-50`, and inner content separates with spacing only. All dashed and redundant middle-box borders removed. Lightened the global `--border` token `oklch(0.83)` → `oklch(0.89)` (literal value only — never references another token, to avoid a circular `@theme` chain).
+**Files:** `components/process-scheduling-simulation.tsx`, `app/globals.css`
+**Commit:** `refactor(ui): use fewer borders — separate with background + space`
+
+### 2. Yellow/sky button text contrast (WCAG)
+The `warning` (→ I/O) variant was `bg-yellow-500` with white text (fails WCAG) — changed the label to `text-yellow-950` (dark on yellow), keeping the yellow fill. Also darkened the borderline `ready` variant `sky-500` → `sky-600` so its white text clears contrast. *(The sky part was later reverted in change 8 by design.)*
+**Files:** `components/ui/button.tsx`
+**Commit:** `fix(a11y): yellow/sky button text contrast (WCAG)`
+
+### 3. Unify the shadow light source
+Button hover shadows were offset down-right (`6px 9px…`) while Cards use a straight-down `shadow-sm`, implying two light sources. Set the button hover-shadow x-offset to `0` (straight down) to match the Cards. Per-hue shadow tints unchanged — only the direction is unified.
+**Files:** `components/ui/button.tsx`
+**Commit:** `style(buttons): unify shadow light source to straight-down`
+
+### 4. De-emphasize info icons + tint text on colored panels
+Recolored the ~14 tooltip ⓘ icons from `text-blue-600` to `text-muted-foreground`, and removed them entirely from self-explanatory headings (Controls, Action Log). Kept the blue Instructions-alert icon tinted to its own panel hue. Changed grey body text on colored panels (green-50 completion card / scenario header) from `text-muted-foreground` to `text-green-700`; alert bodies already used tinted `*-800` text.
+**Files:** `components/process-scheduling-simulation.tsx`, `components/scenario-evaluation.tsx`, `components/guided-scenarios.tsx`
+**Commit:** `style(ui): de-emphasize info icons; tint text on colored panels`
+
+### 5. One meaning per color — difficulty badges off state hues
+Difficulty badges were green/yellow/red, colliding with the Ready/CPU/I-O/Terminated state hues. Recolored them to a neutral **slate** ramp distinguished by intensity, locking sky/green/yellow/red to states only. (Blue's overload as "informational" was already removed in change 4.)
+**Files:** `components/guided-scenarios.tsx`, `components/scenario-evaluation.tsx`
+**Commit:** `style(ui): one meaning per color — difficulty badges off state hues`
+
+### 6. Roomier move-panel buttons (whitespace)
+The Move Process buttons were cramped (`text-xs px-1 py-1`, `gap-1`). Bumped to `text-sm px-3 py-2` in a `gap-2` grid for comfortable hit areas. *(This panel was later removed entirely in change 9.)*
+**Files:** `components/process-scheduling-simulation.tsx`
+**Commit:** `style(ui): roomier move-panel buttons (whitespace)`
+
+### 7. Widen type-scale weight ladder for hierarchy
+The `subsection-title` and `item-label` tiers were only 100 font-weight apart. Widened the ladder to **800 / 700 / 500** (panel / subsection / item-label). Font **sizes were left untouched** because they drive the tuned fixed-height layout — hierarchy now comes from weight, not size.
+**Files:** `app/globals.css`
+**Commit:** `style(ui): widen type-scale weight ladder for hierarchy`
+
+### 8. Revert Create Process button to sky-500
+The `ready` button variant carries the semantic Ready-state colour: a created process enters the Ready queue, and the Ready lane + Ready chips are `sky-500`. Reverted the change-2 contrast darkening (`sky-600`) for this variant so the Create Process button matches the state colour again. The yellow-button fix from change 2 is untouched.
+**Files:** `components/ui/button.tsx`
+**Commit:** `revert(buttons): keep Create Process (ready variant) at sky-500`
+
+### 9. Drag-and-drop process moves (mouse + touch)
+Removed the "Move Process" button panel. Processes are now moved by **dragging a chip onto a lane** (CPU / Ready / I/O / Terminated). Built on **Pointer Events** so it works with mouse, pen, and touch (phones) — not HTML5 `draggable`. Details:
+- chips use `touch-action: none` + pointer capture so dragging a chip doesn't scroll the page;
+- the drop lane is resolved by hit-testing the pointer position (`elementFromPoint` → `data-lane-state`);
+- the hovered lane highlights in its own state hue;
+- the drag preview is portaled to `<body>` with `pointer-events: none` so it never blocks hit-testing.
+A quick **tap still selects** a chip (keyboard `G/I/R/T` still work); a real drag suppresses the trailing click. Moves still pass through engine validation.
+**Files:** `components/process-scheduling-simulation.tsx`
+**Commit:** `feat(sandbox): drag-and-drop process moves (mouse + touch)`

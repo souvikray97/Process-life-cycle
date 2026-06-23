@@ -8,7 +8,28 @@
       "Bash(xargs ls -la)",
       "Bash(python3 -)",
       "Bash(pnpm lint *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(ps aux *)",
+      "Bash(systemd-run --user --scope -p MemoryMax=2G -p MemorySwapMax=0 true)",
+      "Bash(systemd-run --user --scope -p MemoryMax=2G -p MemorySwapMax=0 pnpm build)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m ' *)",
+      "Bash(bun --version)",
+      "Bash(cd *)",
+      "Bash(systemctl --user list-units --type=scope --no-legend)",
+      "Bash(ps -o pid=,ppid=,etimes=,comm= -p 117541)",
+      "Bash(systemctl --user show run-p122511-i122512.scope -p Result -p MemoryPeak -p MemoryMax)",
+      "Bash(journalctl --user -u run-p122511-i122512.scope --no-pager)",
+      "Bash(dmesg)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0 --setenv=PORT=3005 bun run dev)",
+      "Bash(pkill -f \"Process-life-cycle-exp.*next\")",
+      "Bash(pkill -f \"PORT=300\")",
+      "Bash(git checkout *)",
+      "Bash(systemd-run --user --scope -p MemoryMax=2G -p MemorySwapMax=0 bun run build)",
+      "Bash(curl -s http://localhost:3005/_next/static/chunks/0o4j78b627iuo.css)",
+      "Bash(pkill -f \"next start\")",
+      "Bash(pkill -f \"PORT=3005\")"
     ]
   }
 }
