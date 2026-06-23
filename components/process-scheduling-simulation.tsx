@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useCallback, useEffect, useRef, forwardRef, useImperativeHandle } from "react"
+import { useState, useCallback, useEffect, useRef, forwardRef, useImperativeHandle, type PointerEvent as ReactPointerEvent } from "react"
+import { createPortal } from "react-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -171,6 +172,86 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
     }
     setSelectedProcess(null)
   }, [engine, refreshState, showAlert])
+
+  // ── Drag-and-drop moving (pointer events → works with mouse, touch and pen) ───────────
+  // A process chip is dragged onto a lane (CPU / Ready / I/O / Terminated) to request that
+  // transition; the engine still validates it. Pointer events unify mouse + touch, so this
+  // works on phones. Lanes carry data-lane-state; the drop target is resolved by hit-testing
+  // the point under the pointer.
+  const dragInfo = useRef<{ id: number; pointerId: number; moved: boolean; startX: number; startY: number } | null>(null)
+  const suppressClick = useRef(false)
+  const [dragProcess, setDragProcess] = useState<SimulationProcess | null>(null)
+  const [dragPos, setDragPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+  const [dragOverState, setDragOverState] = useState<SimulationProcess["state"] | null>(null)
+
+  const laneFromPoint = useCallback((x: number, y: number): SimulationProcess["state"] | null => {
+    const lane = (document.elementFromPoint(x, y) as HTMLElement | null)?.closest("[data-lane-state]") as HTMLElement | null
+    return (lane?.dataset.laneState as SimulationProcess["state"]) ?? null
+  }, [])
+
+  const handleChipPointerDown = useCallback((e: ReactPointerEvent, process: SimulationProcess) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return
+    suppressClick.current = false
+    dragInfo.current = { id: process.id, pointerId: e.pointerId, moved: false, startX: e.clientX, startY: e.clientY }
+    try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId) } catch {}
+    setDragProcess(process)
+    setDragPos({ x: e.clientX, y: e.clientY })
+  }, [])
+
+  const handleChipPointerMove = useCallback((e: ReactPointerEvent) => {
+    const info = dragInfo.current
+    if (!info || info.pointerId !== e.pointerId) return
+    if (!info.moved && Math.hypot(e.clientX - info.startX, e.clientY - info.startY) < 6) return
+    info.moved = true
+    e.preventDefault()
+    setDragPos({ x: e.clientX, y: e.clientY })
+    setDragOverState(laneFromPoint(e.clientX, e.clientY))
+  }, [laneFromPoint])
+
+  const endChipDrag = useCallback((e: ReactPointerEvent, commit: boolean) => {
+    const info = dragInfo.current
+    if (!info || info.pointerId !== e.pointerId) return
+    try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId) } catch {}
+    if (commit && info.moved) {
+      const target = laneFromPoint(e.clientX, e.clientY)
+      if (target) handleProcessMove(info.id, target)
+      suppressClick.current = true // a real drag happened — don't let the trailing click also select
+    }
+    dragInfo.current = null
+    setDragProcess(null)
+    setDragOverState(null)
+  }, [laneFromPoint, handleProcessMove])
+
+  const handleChipClick = useCallback((processId: number) => {
+    if (suppressClick.current) { suppressClick.current = false; return }
+    setSelectedProcess(processId)
+  }, [])
+
+  // Per-state highlight applied to a lane while a compatible chip hovers over it.
+  const laneHighlight = (state: SimulationProcess["state"]): string => {
+    if (dragOverState !== state) return ""
+    switch (state) {
+      case "running": return "bg-green-100 ring-2 ring-inset ring-green-400"
+      case "ready": return "bg-sky-100 ring-2 ring-inset ring-sky-400"
+      case "blocked": return "bg-yellow-100 ring-2 ring-inset ring-yellow-400"
+      case "terminated": return "bg-red-100 ring-2 ring-inset ring-red-400"
+      default: return ""
+    }
+  }
+
+  const renderChip = (process: SimulationProcess) => (
+    <div
+      key={process.id}
+      onPointerDown={(e) => handleChipPointerDown(e, process)}
+      onPointerMove={handleChipPointerMove}
+      onPointerUp={(e) => endChipDrag(e, true)}
+      onPointerCancel={(e) => endChipDrag(e, false)}
+      onClick={() => handleChipClick(process.id)}
+      className={`px-1 sm:px-2 py-1 rounded text-white font-bold cursor-grab active:cursor-grabbing transition-all hover:scale-105 text-xs flex-shrink-0 touch-none select-none ${getProcessColor(process.state)} ${selectedProcess === process.id ? "ring-2 ring-offset-1 ring-blue-500" : ""} ${dragProcess?.id === process.id ? "opacity-40" : ""}`}
+    >
+      {process.name}
+    </div>
+  )
 
   const handleSelectNextEvent = useCallback(() => {
     const state = engine.getState()
@@ -348,53 +429,6 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 </Button>
               </div>
 
-              {selectedProcess !== null && (
-                <div className="rounded-lg p-2 sm:p-3 bg-blue-50">
-                  <h4 className="item-label mb-2">Move Process P{selectedProcess}:</h4>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button
-                      size="sm"
-                      variant="success"
-                      onClick={() => handleProcessMove(selectedProcess, "running")}
-                      className="text-sm px-3 py-2"
-                    >
-                      {"→ CPU"}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ready"
-                      onClick={() => handleProcessMove(selectedProcess, "ready")}
-                      className="text-sm px-3 py-2"
-                    >
-                      {"→ Ready"}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="warning"
-                      onClick={() => handleProcessMove(selectedProcess, "blocked")}
-                      className="text-sm px-3 py-2"
-                    >
-                      {"→ I/O"}
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => handleProcessMove(selectedProcess, "terminated")}
-                      variant="destructive"
-                      className="text-sm px-3 py-2"
-                    >
-                      Terminate
-                    </Button>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setSelectedProcess(null)}
-                    className="w-full mt-2 text-sm"
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              )}
             </CardContent>
           </Card>
 
@@ -592,29 +626,26 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>
-                          Each process shown in its current state — Ready, CPU, I/O Wait, or Terminated. A process
-                          can be selected here and then moved with the Controls.
+                          Each process shown in its current state — Ready, CPU, I/O Wait, or Terminated.
+                          Drag a process onto another lane to move it (the move is still validated).
                         </p>
                       </TooltipContent>
                     </Tooltip>
                   </div>
 
+                  <p className="text-xs text-muted-foreground -mt-1">Drag a process into another lane to move it.</p>
+
                   {/* CPU lane */}
                   <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
                     <h4 className="item-label mb-2 text-green-600">CPU (running)</h4>
-                  <div className="min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
+                  <div
+                    data-lane-state="running"
+                    className={`min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden transition-colors ${laneHighlight("running")}`}
+                  >
                     {runningProcesses.length === 0 ? (
                       <div className="text-muted-foreground text-xs">No process running</div>
                     ) : (
-                      runningProcesses.map((process) => (
-                        <div
-                          key={process.id}
-                          className={`px-1 sm:px-2 py-1 rounded text-white font-bold cursor-pointer transition-all hover:scale-105 text-xs flex-shrink-0 ${getProcessColor(process.state)} ${selectedProcess === process.id ? "ring-2 ring-offset-1 ring-blue-500" : ""}`}
-                          onClick={() => setSelectedProcess(process.id)}
-                        >
-                          {process.name}
-                        </div>
-                      ))
+                      runningProcesses.map((process) => renderChip(process))
                     )}
                   </div>
                 </div>
@@ -622,19 +653,14 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 {/* Ready lane */}
                 <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
                   <h4 className="item-label mb-2 text-sky-600">Ready</h4>
-                  <div className="min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
+                  <div
+                    data-lane-state="ready"
+                    className={`min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden transition-colors ${laneHighlight("ready")}`}
+                  >
                     {readyProcesses.length === 0 ? (
                       <div className="text-muted-foreground text-xs">No processes ready</div>
                     ) : (
-                      readyProcesses.map((process) => (
-                        <div
-                          key={process.id}
-                          className={`px-1 sm:px-2 py-1 rounded text-white font-bold cursor-pointer transition-all hover:scale-105 text-xs flex-shrink-0 ${getProcessColor(process.state)} ${selectedProcess === process.id ? "ring-2 ring-offset-1 ring-blue-500" : ""}`}
-                          onClick={() => setSelectedProcess(process.id)}
-                        >
-                          {process.name}
-                        </div>
-                      ))
+                      readyProcesses.map((process) => renderChip(process))
                     )}
                   </div>
                 </div>
@@ -642,19 +668,14 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 {/* I/O wait lane */}
                 <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
                   <h4 className="item-label mb-2 text-yellow-600">I/O wait</h4>
-                  <div className="min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
+                  <div
+                    data-lane-state="blocked"
+                    className={`min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden transition-colors ${laneHighlight("blocked")}`}
+                  >
                     {blockedProcesses.length === 0 ? (
                       <div className="text-muted-foreground text-xs">No processes in I/O</div>
                     ) : (
-                      blockedProcesses.map((process) => (
-                        <div
-                          key={process.id}
-                          className={`px-1 sm:px-2 py-1 rounded text-white font-bold cursor-pointer transition-all hover:scale-105 text-xs flex-shrink-0 ${getProcessColor(process.state)} ${selectedProcess === process.id ? "ring-2 ring-offset-1 ring-blue-500" : ""}`}
-                          onClick={() => setSelectedProcess(process.id)}
-                        >
-                          {process.name}
-                        </div>
-                      ))
+                      blockedProcesses.map((process) => renderChip(process))
                     )}
                   </div>
                 </div>
@@ -662,19 +683,14 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 {/* Terminated lane */}
                 <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
                   <h4 className="item-label mb-2 text-red-600">Terminated</h4>
-                  <div className="min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
+                  <div
+                    data-lane-state="terminated"
+                    className={`min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden transition-colors ${laneHighlight("terminated")}`}
+                  >
                     {terminatedProcesses.length === 0 ? (
                       <div className="text-muted-foreground text-xs">No terminated processes</div>
                     ) : (
-                      terminatedProcesses.map((process) => (
-                        <div
-                          key={process.id}
-                          className={`px-1 sm:px-2 py-1 rounded text-white font-bold cursor-pointer transition-all hover:scale-105 text-xs flex-shrink-0 ${getProcessColor(process.state)} ${selectedProcess === process.id ? "ring-2 ring-offset-1 ring-blue-500" : ""}`}
-                          onClick={() => setSelectedProcess(process.id)}
-                        >
-                          {process.name}
-                        </div>
-                      ))
+                      terminatedProcesses.map((process) => renderChip(process))
                     )}
                   </div>
                 </div>
@@ -958,6 +974,20 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
           </div>
         )}
       </div>
+
+      {/* Floating drag preview — follows the pointer (mouse or finger). pointer-events:none so
+          it never intercepts hit-testing for the lane underneath. Portaled to <body> so no
+          overflow-hidden / transformed ancestor can clip it. */}
+      {dragProcess && typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className={`pointer-events-none fixed z-[100] px-2 py-1 rounded text-white font-bold text-xs shadow-lg ${getProcessColor(dragProcess.state)}`}
+            style={{ left: dragPos.x, top: dragPos.y, transform: "translate(-50%, -50%)" }}
+          >
+            {dragProcess.name}
+          </div>,
+          document.body,
+        )}
     </TooltipProvider>
   )
 })
