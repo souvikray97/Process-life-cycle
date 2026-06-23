@@ -30,8 +30,7 @@ export interface SimulationHandle {
 }
 
 export const SIMULATION_SHORTCUT_DEFS: ShortcutDef[] = [
-  { key: " ", label: "Advance Clock (Space)", description: "Advance simulation clock one tick", category: "Simulation" },
-  { key: "a", label: "Advance Clock (A)", description: "Advance simulation clock one tick", category: "Simulation" },
+  { key: "a", label: "Advance Clock", description: "Advance simulation clock one tick", category: "Simulation" },
   { key: "z", label: "Step Back", description: "Undo last clock advance", category: "Simulation" },
   { key: "c", label: "Create Process", description: "Create a new process (needs a create_request event selected)", category: "Simulation" },
   { key: "e", label: "Select Next Event", description: "Cycle through active events in the queue", category: "Simulation" },
@@ -199,8 +198,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
   useEffect(() => { selectedProcessRef.current = selectedProcess }, [selectedProcess])
 
   const shortcuts: ShortcutAction[] = [
-    { key: " ", label: "Advance Clock (Space)", description: "Advance simulation clock one tick", category: "Simulation", action: handleAdvanceClock },
-    { key: "a", label: "Advance Clock (A)", description: "Advance simulation clock one tick", category: "Simulation", action: handleAdvanceClock },
+    { key: "a", label: "Advance Clock", description: "Advance simulation clock one tick", category: "Simulation", action: handleAdvanceClock },
     { key: "z", label: "Step Back", description: "Undo last clock advance", category: "Simulation", action: handleStepBack },
     { key: "c", label: "Create Process", description: "Create a new process", category: "Simulation", action: handleCreateProcess },
     { key: "e", label: "Select Next Event", description: "Cycle through active events in the queue", category: "Simulation", action: handleSelectNextEvent },

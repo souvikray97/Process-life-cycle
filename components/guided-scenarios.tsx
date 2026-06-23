@@ -1754,8 +1754,7 @@ export function GuidedScenarios({
   useEffect(() => { scenarioActiveRef.current = isScenarioActive }, [isScenarioActive])
 
   const simShortcuts: ShortcutAction[] = useMemo(() => [
-    { key: " ", label: "Advance Clock (Space)", description: "Advance simulation clock one tick", category: "Simulation", action: () => simulationRef.current?.advanceClock() },
-    { key: "a", label: "Advance Clock (A)", description: "Advance simulation clock one tick", category: "Simulation", action: () => simulationRef.current?.advanceClock() },
+    { key: "a", label: "Advance Clock", description: "Advance simulation clock one tick", category: "Simulation", action: () => simulationRef.current?.advanceClock() },
     { key: "z", label: "Step Back", description: "Undo last clock advance", category: "Simulation", action: () => simulationRef.current?.stepBack() },
     { key: "c", label: "Create Process", description: "Create a new process", category: "Simulation", action: () => simulationRef.current?.createProcess() },
     { key: "e", label: "Select Next Event", description: "Cycle through active events in the queue", category: "Simulation", action: () => simulationRef.current?.selectNextEvent() },
