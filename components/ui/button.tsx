@@ -26,12 +26,14 @@ const buttonVariants = cva(
         // Green — generic positive / start actions.
         success:
           'bg-green-600 text-white hover:bg-green-700 hover:shadow-[6px_9px_22px_-3px_rgba(74,222,128,0.8)]',
-        // Sky — the standardized Ready-state colour.
+        // Sky — the standardized Ready-state colour. Fill darkened to sky-600 so white
+        // text clears WCAG (sky-500 + white was borderline); stays in the sky family.
         ready:
-          'bg-sky-500 text-white hover:bg-sky-600 hover:shadow-[6px_9px_22px_-3px_rgba(56,189,248,0.85)]',
-        // Yellow — the I/O-wait colour.
+          'bg-sky-600 text-white hover:bg-sky-700 hover:shadow-[6px_9px_22px_-3px_rgba(56,189,248,0.85)]',
+        // Yellow — the I/O-wait colour. Dark text on yellow: white-on-yellow-500 failed
+        // WCAG contrast, so the label uses yellow-950 while keeping the recognizable fill.
         warning:
-          'bg-yellow-500 text-white hover:bg-yellow-600 hover:shadow-[6px_9px_22px_-3px_rgba(250,204,21,0.85)]',
+          'bg-yellow-500 text-yellow-950 hover:bg-yellow-600 hover:shadow-[6px_9px_22px_-3px_rgba(250,204,21,0.85)]',
         outline:
           'border-2 border-gray-400 bg-background hover:bg-accent hover:border-gray-500 hover:text-accent-foreground hover:shadow-[6px_9px_22px_-3px_rgba(148,163,184,0.6)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
         secondary:
