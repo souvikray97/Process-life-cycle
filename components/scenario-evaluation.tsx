@@ -320,7 +320,7 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
                     )}
 
                     <div className="flex flex-col sm:flex-row gap-2">
-                      <Button onClick={() => startScenario(scenario)} className="bg-blue-600 hover:bg-blue-700 text-sm">
+                      <Button onClick={() => startScenario(scenario)} variant="info" className="text-sm">
                         <Play className="h-4 w-4 mr-2 flex-shrink-0" />
                         {result && result.completed ? "Retry Scenario" : "Start Scenario"}
                       </Button>
@@ -622,7 +622,7 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
                   </ul>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2">
-                  <Button onClick={completeScenario} className="bg-green-600 hover:bg-green-700 text-sm">
+                  <Button onClick={completeScenario} variant="success" className="text-sm">
                     <CheckCircle className="h-4 w-4 mr-2 flex-shrink-0" />
                     Complete Scenario
                   </Button>

@@ -321,7 +321,8 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
               <div className="flex flex-col gap-2">
                 <Button
                   onClick={handleAdvanceClock}
-                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm w-full"
+                  variant="info"
+                  className="flex items-center gap-2 text-xs sm:text-sm w-full"
                 >
                   <Redo2 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                   <span className="hidden sm:inline">Advance Clock</span>
@@ -330,7 +331,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 <Button
                   onClick={handleStepBack}
                   disabled={historyLength === 0}
-                  variant="outline"
+                  variant="info"
                   className="flex items-center gap-2 text-xs sm:text-sm w-full"
                 >
                   <Undo2 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
@@ -346,7 +347,8 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 </Button>
                 <Button
                   onClick={handleCreateProcess}
-                  className="bg-green-600 hover:bg-green-700 text-xs sm:text-sm w-full"
+                  variant="ready"
+                  className="text-xs sm:text-sm w-full"
                 >
                   <span className="hidden sm:inline">Create Process</span>
                   <span className="sm:hidden">Create</span>
@@ -359,22 +361,25 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   <div className="grid grid-cols-2 gap-1">
                     <Button
                       size="sm"
+                      variant="success"
                       onClick={() => handleProcessMove(selectedProcess, "running")}
-                      className="bg-green-600 hover:bg-green-700 text-xs px-1 py-1"
+                      className="text-xs px-1 py-1"
                     >
                       {"→ CPU"}
                     </Button>
                     <Button
                       size="sm"
+                      variant="ready"
                       onClick={() => handleProcessMove(selectedProcess, "ready")}
-                      className="bg-sky-600 hover:bg-sky-700 text-xs px-1 py-1"
+                      className="text-xs px-1 py-1"
                     >
                       {"→ Ready"}
                     </Button>
                     <Button
                       size="sm"
+                      variant="warning"
                       onClick={() => handleProcessMove(selectedProcess, "blocked")}
-                      className="bg-yellow-600 hover:bg-yellow-700 text-xs px-1 py-1"
+                      className="text-xs px-1 py-1"
                     >
                       {"→ I/O"}
                     </Button>

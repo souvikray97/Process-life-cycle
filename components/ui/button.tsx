@@ -13,16 +13,31 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        // Each variant's hover shadow tint is a lighter shade of that variant's own colour
+        // (e.g. a green button → green-tinted shadow), so the 3D lift reads as belonging to
+        // the button rather than a single global blue. Offset down-right, no transform.
         default:
-          'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[6px_9px_22px_-3px_rgba(79,70,229,0.7)]',
+          'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[6px_9px_22px_-3px_rgba(79,70,229,0.6)]',
         destructive:
-          'bg-destructive text-white hover:bg-destructive/90 hover:shadow-[6px_9px_22px_-3px_rgba(220,38,38,0.7)] focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+          'bg-destructive text-white hover:bg-destructive/90 hover:shadow-[6px_9px_22px_-3px_rgba(248,113,113,0.75)] focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+        // Blue — used for the clock controls (Advance / Revert).
+        info:
+          'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-[6px_9px_22px_-3px_rgba(96,165,250,0.8)]',
+        // Green — generic positive / start actions.
+        success:
+          'bg-green-600 text-white hover:bg-green-700 hover:shadow-[6px_9px_22px_-3px_rgba(74,222,128,0.8)]',
+        // Sky — the standardized Ready-state colour.
+        ready:
+          'bg-sky-500 text-white hover:bg-sky-600 hover:shadow-[6px_9px_22px_-3px_rgba(56,189,248,0.85)]',
+        // Yellow — the I/O-wait colour.
+        warning:
+          'bg-yellow-500 text-white hover:bg-yellow-600 hover:shadow-[6px_9px_22px_-3px_rgba(250,204,21,0.85)]',
         outline:
-          'border-2 border-gray-400 bg-background hover:bg-accent hover:border-gray-500 hover:text-accent-foreground hover:shadow-[6px_9px_22px_-3px_rgba(37,99,235,0.6)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+          'border-2 border-gray-400 bg-background hover:bg-accent hover:border-gray-500 hover:text-accent-foreground hover:shadow-[6px_9px_22px_-3px_rgba(148,163,184,0.6)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-[6px_9px_22px_-3px_rgba(100,116,139,0.65)]',
+          'bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-[6px_9px_22px_-3px_rgba(148,163,184,0.6)]',
         ghost:
-          'shadow-none hover:bg-accent hover:text-accent-foreground hover:shadow-[5px_8px_18px_-4px_rgba(37,99,235,0.5)] dark:hover:bg-accent/50',
+          'shadow-none hover:bg-accent hover:text-accent-foreground hover:shadow-[5px_8px_18px_-4px_rgba(148,163,184,0.5)] dark:hover:bg-accent/50',
         link: 'shadow-none hover:shadow-none text-primary underline-offset-4 hover:underline',
       },
       size: {

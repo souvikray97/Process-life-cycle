@@ -1854,7 +1854,7 @@ export function GuidedScenarios({
                 Retry Scenario
               </Button>
               {!isLastScenario && (
-                <Button onClick={goToNextScenario} className="bg-green-600 hover:bg-green-700">
+                <Button onClick={goToNextScenario} variant="success">
                   Next Scenario
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
@@ -2071,7 +2071,8 @@ export function GuidedScenarios({
               <Button
                 onClick={() => completeStep(currentStepData.id)}
                 disabled={!canComplete}
-                className="bg-green-600 hover:bg-green-700 disabled:opacity-50"
+                variant="success"
+                className="disabled:opacity-50"
               >
                 <CheckCircle className="h-4 w-4 mr-2" />
                 Check & Complete Step
@@ -2171,7 +2172,7 @@ export function GuidedScenarios({
                   </div>
                 </div>
 
-                <Button onClick={() => startScenario(scenario)} className="bg-green-600 hover:bg-green-700">
+                <Button onClick={() => startScenario(scenario)} variant="success">
                   <Play className="h-4 w-4 mr-2" />
                   {isCompleted ? "Restart Guided Learning" : "Start Guided Learning"}
                 </Button>
