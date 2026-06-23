@@ -360,7 +360,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
               </div>
 
               {selectedProcess !== null && (
-                <div className="border rounded-lg p-2 sm:p-3 bg-blue-50">
+                <div className="rounded-lg p-2 sm:p-3 bg-blue-50">
                   <h4 className="item-label mb-2">Move Process P{selectedProcess}:</h4>
                   <div className="grid grid-cols-2 gap-1">
                     <Button
@@ -537,8 +537,8 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
 
                   {/* Fixed-height, scrollable event list — does not grow the layout.
                       Height tuned so the box bottom border aligns with the Ready lane bottom. */}
-                  <div className="flex-shrink-0 border rounded-lg p-2 bg-gray-50">
-                    <div ref={eventQueueRef} className="h-[10.3125rem] overflow-y-auto space-y-2 event-queue-container border-2 border-dashed border-gray-400 rounded-lg p-2">
+                  <div className="flex-shrink-0 rounded-lg p-2 bg-gray-50">
+                    <div ref={eventQueueRef} className="h-[10.3125rem] overflow-y-auto space-y-2 event-queue-container rounded-lg p-2">
                       {activeEvents.length === 0 ? (
                         <div className="text-center text-muted-foreground py-4 sm:py-8 text-xs">No active events</div>
                       ) : (
@@ -611,9 +611,9 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   </div>
 
                   {/* CPU lane */}
-                  <div className="border rounded-lg p-2 bg-gray-50 overflow-hidden">
+                  <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
                     <h4 className="item-label mb-2 text-green-600">CPU (running)</h4>
-                  <div className="min-h-8 sm:min-h-10 border-2 border-dashed border-gray-400 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
+                  <div className="min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
                     {runningProcesses.length === 0 ? (
                       <div className="text-muted-foreground text-xs">No process running</div>
                     ) : (
@@ -631,9 +631,9 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 </div>
 
                 {/* Ready lane */}
-                <div className="border rounded-lg p-2 bg-gray-50 overflow-hidden">
+                <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
                   <h4 className="item-label mb-2 text-sky-600">Ready</h4>
-                  <div className="min-h-8 sm:min-h-10 border-2 border-dashed border-gray-400 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
+                  <div className="min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
                     {readyProcesses.length === 0 ? (
                       <div className="text-muted-foreground text-xs">No processes ready</div>
                     ) : (
@@ -651,9 +651,9 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 </div>
 
                 {/* I/O wait lane */}
-                <div className="border rounded-lg p-2 bg-gray-50 overflow-hidden">
+                <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
                   <h4 className="item-label mb-2 text-yellow-600">I/O wait</h4>
-                  <div className="min-h-8 sm:min-h-10 border-2 border-dashed border-gray-400 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
+                  <div className="min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
                     {blockedProcesses.length === 0 ? (
                       <div className="text-muted-foreground text-xs">No processes in I/O</div>
                     ) : (
@@ -671,9 +671,9 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 </div>
 
                 {/* Terminated lane */}
-                <div className="border rounded-lg p-2 bg-gray-50 overflow-hidden">
+                <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
                   <h4 className="item-label mb-2 text-red-600">Terminated</h4>
-                  <div className="min-h-8 sm:min-h-10 border-2 border-dashed border-gray-400 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
+                  <div className="min-h-8 sm:min-h-10 rounded-lg p-1 sm:p-2 flex flex-wrap gap-1 overflow-hidden">
                     {terminatedProcesses.length === 0 ? (
                       <div className="text-muted-foreground text-xs">No terminated processes</div>
                     ) : (
@@ -741,12 +741,12 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   </Tooltip>
                 </div>
                 {Object.keys(simulationState.metrics.stateTimeTracking).length > 0 ? (
-                  <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-2 text-xs border rounded-lg p-2 bg-gray-50">
+                  <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-2 text-xs rounded-lg p-2 bg-gray-50">
                     {Object.entries(simulationState.metrics.stateTimeTracking).map(([processName, times]) => {
                       const t = times as { ready: number; running: number; blocked: number }
                       const total = t.ready + t.running + t.blocked
                       return (
-                        <div key={processName} className="border rounded p-2 bg-white">
+                        <div key={processName} className="rounded p-2 bg-white">
                           <div className="font-semibold mb-1">{processName}</div>
                           {total > 0 && (
                             <div className="w-full h-3 rounded-full overflow-hidden flex mb-1">
@@ -796,7 +796,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                     </TooltipContent>
                   </Tooltip>
                 </div>
-                <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-1 action-log-container border rounded-lg p-2 bg-gray-50">
+                <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-1 action-log-container rounded-lg p-2 bg-gray-50">
                   {simulationState.actionLog.length === 0 ? (
                     <div className="text-center text-muted-foreground py-4 text-xs sm:text-sm">
                       No activity yet. Actions and events appear here once the sandbox is in use.
@@ -888,7 +888,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
               {/* Invalid Transition Attempts — recorded so the Evaluation engine can score mistakes */}
               <div>
                 <h4 className="item-label mb-2">Invalid Transition Attempts</h4>
-                <div className="border rounded-lg p-3 bg-gray-50 space-y-2 max-h-48 overflow-y-auto">
+                <div className="rounded-lg p-3 bg-gray-50 space-y-2 max-h-48 overflow-y-auto">
                   {simulationState.metrics.invalidTransitionLog.length === 0 ? (
                     <p className="text-xs text-muted-foreground">No invalid transitions attempted. Rejected moves are recorded here with the reason.</p>
                   ) : (
@@ -914,7 +914,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
               {/* State Transition History */}
               <div>
                 <h4 className="item-label mb-2">State Transition History</h4>
-                <div className="border rounded-lg p-3 bg-gray-50 space-y-2 max-h-48 overflow-y-auto">
+                <div className="rounded-lg p-3 bg-gray-50 space-y-2 max-h-48 overflow-y-auto">
                   {simulationState.processes.filter((p: SimulationProcess) => p.history.length > 0).length === 0 ? (
                     <p className="text-xs text-muted-foreground">No transitions recorded yet. Each process's path through the life cycle appears here.</p>
                   ) : (
