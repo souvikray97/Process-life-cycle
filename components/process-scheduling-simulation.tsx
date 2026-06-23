@@ -351,12 +351,12 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
               {selectedProcess !== null && (
                 <div className="rounded-lg p-2 sm:p-3 bg-blue-50">
                   <h4 className="item-label mb-2">Move Process P{selectedProcess}:</h4>
-                  <div className="grid grid-cols-2 gap-1">
+                  <div className="grid grid-cols-2 gap-2">
                     <Button
                       size="sm"
                       variant="success"
                       onClick={() => handleProcessMove(selectedProcess, "running")}
-                      className="text-xs px-1 py-1"
+                      className="text-sm px-3 py-2"
                     >
                       {"→ CPU"}
                     </Button>
@@ -364,7 +364,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                       size="sm"
                       variant="ready"
                       onClick={() => handleProcessMove(selectedProcess, "ready")}
-                      className="text-xs px-1 py-1"
+                      className="text-sm px-3 py-2"
                     >
                       {"→ Ready"}
                     </Button>
@@ -372,7 +372,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                       size="sm"
                       variant="warning"
                       onClick={() => handleProcessMove(selectedProcess, "blocked")}
-                      className="text-xs px-1 py-1"
+                      className="text-sm px-3 py-2"
                     >
                       {"→ I/O"}
                     </Button>
@@ -380,7 +380,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                       size="sm"
                       onClick={() => handleProcessMove(selectedProcess, "terminated")}
                       variant="destructive"
-                      className="text-xs px-1 py-1"
+                      className="text-sm px-3 py-2"
                     >
                       Terminate
                     </Button>
@@ -389,7 +389,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                     size="sm"
                     variant="outline"
                     onClick={() => setSelectedProcess(null)}
-                    className="w-full mt-2 text-xs"
+                    className="w-full mt-2 text-sm"
                   >
                     Cancel
                   </Button>
