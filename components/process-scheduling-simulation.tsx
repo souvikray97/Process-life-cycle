@@ -528,9 +528,10 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                     </Tooltip>
                   </div>
 
-                  {/* Fixed-height, scrollable event list — does not grow the layout. */}
+                  {/* Fixed-height, scrollable event list — does not grow the layout.
+                      Height tuned so the box bottom border aligns with the Ready lane bottom. */}
                   <div className="flex-shrink-0 border rounded-lg p-2 bg-gray-50">
-                    <div className="h-[180px] overflow-y-auto space-y-2 event-queue-container border-2 border-dashed border-gray-400 rounded-lg p-2">
+                    <div className="h-[165px] overflow-y-auto space-y-2 event-queue-container border-2 border-dashed border-gray-400 rounded-lg p-2">
                       {activeEvents.length === 0 ? (
                         <div className="text-center text-muted-foreground py-4 sm:py-8 text-xs">No active events</div>
                       ) : (
