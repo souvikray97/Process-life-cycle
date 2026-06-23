@@ -64,15 +64,17 @@ export function ScenarioEvaluation({ persistedResults, onResultsChange }: Scenar
   }, [isScenarioActive, scenarioEngine])
 
   const getDifficultyColor = (difficulty: string) => {
+    // Neutral slate ramp — difficulty is chrome, not a process state, so it must NOT reuse
+    // the sky/green/yellow/red state hues. The three tiers are told apart by intensity.
     switch (difficulty) {
       case "beginner":
-        return "bg-green-100 text-green-800 border-green-200"
+        return "bg-slate-100 text-slate-700 border-slate-200"
       case "intermediate":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200"
+        return "bg-slate-200 text-slate-800 border-slate-300"
       case "advanced":
-        return "bg-red-100 text-red-800 border-red-200"
+        return "bg-slate-700 text-slate-50 border-slate-800"
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200"
+        return "bg-slate-100 text-slate-700 border-slate-200"
     }
   }
 
