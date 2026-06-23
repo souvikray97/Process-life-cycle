@@ -96,6 +96,9 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
   const [diagramZoomed, setDiagramZoomed] = useState(false)
   const historyStack = useRef<EngineSnapshot[]>([])
   const [historyLength, setHistoryLength] = useState(0)
+  // Scoped to this instance so auto-scroll targets the right Event Requests list even when a
+  // second (embedded) simulation is mounted on the Scenarios tab.
+  const eventQueueRef = useRef<HTMLDivElement>(null)
 
   const refreshState = useCallback(() => {
     const newState = engine.getState()
@@ -277,17 +280,16 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
     }
   }
 
+  // Auto-scroll the Event Requests list to the bottom as new events are appended there.
+  // Depend on the event count (and clock) because the engine mutates the events array in
+  // place, so the array reference itself never changes between renders.
+  const activeEventCount = simulationState.events.filter((e) => e.state === "active").length
   useEffect(() => {
-    const logContainer = document.querySelector(".action-log-container")
-    if (logContainer) {
-      logContainer.scrollTop = logContainer.scrollHeight
+    const el = eventQueueRef.current
+    if (el) {
+      el.scrollTop = el.scrollHeight
     }
-
-    const eventContainer = document.querySelector(".event-queue-container")
-    if (eventContainer) {
-      eventContainer.scrollTop = eventContainer.scrollHeight
-    }
-  }, [simulationState.actionLog, simulationState.events])
+  }, [activeEventCount, simulationState.events.length, simulationState.currentTime])
 
   const readyProcesses = simulationState.processes.filter((p) => p.state === "ready")
   const runningProcesses = simulationState.processes.filter((p) => p.state === "running")
@@ -536,7 +538,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   {/* Fixed-height, scrollable event list — does not grow the layout.
                       Height tuned so the box bottom border aligns with the Ready lane bottom. */}
                   <div className="flex-shrink-0 border rounded-lg p-2 bg-gray-50">
-                    <div className="h-[10.3125rem] overflow-y-auto space-y-2 event-queue-container border-2 border-dashed border-gray-400 rounded-lg p-2">
+                    <div ref={eventQueueRef} className="h-[10.3125rem] overflow-y-auto space-y-2 event-queue-container border-2 border-dashed border-gray-400 rounded-lg p-2">
                       {activeEvents.length === 0 ? (
                         <div className="text-center text-muted-foreground py-4 sm:py-8 text-xs">No active events</div>
                       ) : (
