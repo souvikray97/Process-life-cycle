@@ -28,10 +28,11 @@ const buttonVariants = cva(
         // Green — generic positive / start actions.
         success:
           'bg-green-600 text-white hover:bg-green-700 hover:shadow-[0_9px_22px_-3px_rgba(74,222,128,0.8)]',
-        // Sky — the standardized Ready-state colour. Fill darkened to sky-600 so white
-        // text clears WCAG (sky-500 + white was borderline); stays in the sky family.
+        // Sky — the standardized Ready-state colour. Deliberately kept at sky-500 to match
+        // the Ready lane and Ready process chips (a created process enters Ready); the colour
+        // carries that semantic, so it is not darkened for contrast.
         ready:
-          'bg-sky-600 text-white hover:bg-sky-700 hover:shadow-[0_9px_22px_-3px_rgba(56,189,248,0.85)]',
+          'bg-sky-500 text-white hover:bg-sky-600 hover:shadow-[0_9px_22px_-3px_rgba(56,189,248,0.85)]',
         // Yellow — the I/O-wait colour. Dark text on yellow: white-on-yellow-500 failed
         // WCAG contrast, so the label uses yellow-950 while keeping the recognizable fill.
         warning:
