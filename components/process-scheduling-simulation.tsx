@@ -429,7 +429,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
             </CardHeader>
             <CardContent>
               {/* Fixed height (~2 entries) with scroll so the card stays compact. */}
-              <div className="h-[190px] overflow-y-auto space-y-1.5 pr-1">
+              <div className="h-[11.875rem] overflow-y-auto space-y-1.5 pr-1">
                 {EVENT_CATALOG.map((entry) => (
                   <div key={entry.name} className={`rounded border p-2 text-xs ${entry.color}`}>
                     <div className="flex items-center justify-between gap-2">
@@ -536,7 +536,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   {/* Fixed-height, scrollable event list — does not grow the layout.
                       Height tuned so the box bottom border aligns with the Ready lane bottom. */}
                   <div className="flex-shrink-0 border rounded-lg p-2 bg-gray-50">
-                    <div className="h-[165px] overflow-y-auto space-y-2 event-queue-container border-2 border-dashed border-gray-400 rounded-lg p-2">
+                    <div className="h-[10.3125rem] overflow-y-auto space-y-2 event-queue-container border-2 border-dashed border-gray-400 rounded-lg p-2">
                       {activeEvents.length === 0 ? (
                         <div className="text-center text-muted-foreground py-4 sm:py-8 text-xs">No active events</div>
                       ) : (
@@ -585,7 +585,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                     type="button"
                     onClick={() => setDiagramZoomed(true)}
                     aria-label="Enlarge the Valid Transitions diagram"
-                    className="flex-1 min-h-[150px] cursor-zoom-in overflow-hidden rounded-lg border border-gray-200 bg-white p-1 transition-colors hover:border-blue-400 hover:ring-2 hover:ring-inset hover:ring-blue-300"
+                    className="flex-1 min-h-[9.375rem] cursor-zoom-in overflow-hidden rounded-lg border border-gray-200 bg-white p-1 transition-colors hover:border-blue-400 hover:ring-2 hover:ring-inset hover:ring-blue-300"
                   >
                     <ProcessStateDiagram />
                   </button>

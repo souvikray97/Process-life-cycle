@@ -116,7 +116,7 @@ export default function OSVirtualLab() {
       <div className="min-h-screen bg-background">
         {/* Header */}
         <header className="border-b border-border bg-card">
-          <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-4 max-w-7xl">
+          <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-4 max-w-7xl 2xl:max-w-[90rem] 3xl:max-w-[104rem] 4xl:max-w-[120rem] 5xl:max-w-[150rem]">
             <div className="flex items-center justify-between gap-2">
               <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
                 Process Life Cycle Management
@@ -146,7 +146,7 @@ export default function OSVirtualLab() {
         </header>
 
         {/* Main Content */}
-        <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-6 max-w-7xl">
+        <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-6 max-w-7xl 2xl:max-w-[90rem] 3xl:max-w-[104rem] 4xl:max-w-[120rem] 5xl:max-w-[150rem]">
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-4 sm:mb-6 h-auto bg-gray-300 gap-1 p-1">
               <Tooltip>
