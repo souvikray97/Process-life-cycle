@@ -745,9 +745,11 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                     </TooltipContent>
                   </Tooltip>
                 </div>
-                {Object.keys(simulationState.metrics.stateTimeTracking).length > 0 ? (
-                  <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-2 text-xs rounded-lg p-2 bg-gray-100">
-                    {Object.entries(simulationState.metrics.stateTimeTracking).map(([processName, times]) => {
+                <div className="h-32 sm:h-48 overflow-y-auto space-y-2 text-xs rounded-lg p-2 bg-gray-100">
+                  {Object.keys(simulationState.metrics.stateTimeTracking).length === 0 ? (
+                    <p className="text-xs text-muted-foreground">No process data yet. State presence appears once a process exists and the clock advances.</p>
+                  ) : (
+                    Object.entries(simulationState.metrics.stateTimeTracking).map(([processName, times]) => {
                       const t = times as { ready: number; running: number; blocked: number }
                       const total = t.ready + t.running + t.blocked
                       return (
@@ -782,18 +784,16 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                           </div>
                         </div>
                       )
-                    })}
-                  </div>
-                ) : (
-                  <p className="text-xs text-muted-foreground">No process data yet. State presence appears once a process exists and the clock advances.</p>
-                )}
+                    })
+                  )}
+                </div>
               </div>
 
               <div className="space-y-2">
                 <div className="item-label flex items-center gap-2">
                   Action Log
                 </div>
-                <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-1 action-log-container rounded-lg p-2 bg-gray-100">
+                <div className="h-32 sm:h-48 overflow-y-auto space-y-1 action-log-container rounded-lg p-2 bg-gray-100">
                   {simulationState.actionLog.length === 0 ? (
                     <div className="text-center text-muted-foreground py-4 text-xs sm:text-sm">
                       No activity yet. Actions and events appear here once the sandbox is in use.
