@@ -417,3 +417,53 @@ Verified via the real `pnpm dev` under the cap: server stays up, all requests 20
 
 **Files:** `package.json`
 **Commit:** `fix(dev): use webpack dev server — Turbopack dev OOMs on Next 16.2/Node 26`
+
+---
+
+## Round 5 — Sandbox Panel Styling Polish
+
+All changes in `components/process-scheduling-simulation.tsx`.
+
+### 1. Greyer generative panels — `bg-gray-50` → `bg-gray-100`
+
+The nine grey "generative" panels were one shade too light (`bg-gray-50`, `#f9fafb`). Stepped them up one notch to `bg-gray-100` (`#f3f4f6`) for clearer separation from the white cards:
+
+Event Request queue, CPU / Ready / I/O / Terminated lanes, State Presence (Relative), Action Log, Invalid Transition Attempts, State Transition History.
+
+(The pre-existing `bg-gray-100` event-color helper at the top of the file was unrelated and left as-is.)
+
+### 2. Fixed height for State Presence & Action Log — `max-h-*` → `h-*`
+
+Both boxes used `max-h-32 sm:max-h-48`, so they grew with each generation and the layout jumped. Changed to a constant `h-32 sm:h-48`; `overflow-y-auto` is kept, so content scrolls inside the box instead of expanding the panel.
+
+```diff
+- <div className="max-h-32 sm:max-h-48 overflow-y-auto ... bg-gray-100">   {/* State Presence */}
++ <div className="h-32 sm:h-48 overflow-y-auto ... bg-gray-100">
+- <div className="max-h-32 sm:max-h-48 overflow-y-auto ... bg-gray-100">   {/* Action Log */}
++ <div className="h-32 sm:h-48 overflow-y-auto ... bg-gray-100">
+```
+
+### 3. State Presence — placeholder moved inside the fixed-height box
+
+Previously the empty-state ("No process data yet…") was a separate `<p>` rendered *outside* the grey box; on the first generation the layout jumped from a short paragraph to the full box. Restructured so the box is always present at `h-32 sm:h-48` and the empty/populated branch lives **inside** it — constant height from the start.
+
+### 4. Action Log placeholder text size — `text-xs sm:text-sm` → `text-xs`
+
+The "No activity yet…" placeholder bumped to `text-sm` on wider screens, making it larger than every other panel's placeholder. Pinned to `text-xs` to match Event Request and State Presence.
+
+### 5. Placeholder alignment — left-aligned, vertically centered
+
+The fixed-height boxes centered their placeholder horizontally (`text-center`) and pushed it down with `py-*`, inconsistent with the lanes. Unified the three fixed-height boxes (Event Request, State Presence, Action Log) to `h-full flex items-center text-xs` — **left-aligned, vertically centered** in the box.
+
+```diff
+- <div className="text-center text-muted-foreground py-4 sm:py-8 text-xs">No active events</div>
++ <div className="h-full flex items-center text-muted-foreground text-xs">No active events</div>
+- <p className="text-xs text-muted-foreground">No process data yet. …</p>
++ <p className="h-full flex items-center text-xs text-muted-foreground">No process data yet. …</p>
+- <div className="text-center text-muted-foreground py-4 text-xs">No activity yet. …</div>
++ <div className="h-full flex items-center text-muted-foreground text-xs">No activity yet. …</div>
+```
+
+The CPU/Ready/I/O/Terminated lanes (reference style) and the Invalid Transitions / State Transition History boxes (which shrink to content when empty, no tall gap) were already left-aligned and left untouched.
+
+**Files:** `components/process-scheduling-simulation.tsx`, `CLAUDE.md`

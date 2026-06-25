@@ -41,6 +41,7 @@ There are **two separate, parallel implementations** of the simulation engine:
 ### UI components (`components/`)
 
 - **`process-scheduling-simulation.tsx`** — Main interactive sandbox. Owns a `SimulationEngine` instance via `useState`. Renders process lanes, event queue, action log, export controls, and metrics. Converted to `forwardRef` — exposes a `SimulationHandle` imperative API (see below). Also exports `SIMULATION_SHORTCUT_DEFS` (static list of shortcut metadata for the dialog).
+  - **Panel styling conventions:** the generative grey panels (Event Request queue, CPU/Ready/I/O/Terminated lanes, State Presence, Action Log, Invalid Transition Attempts, State Transition History) use `bg-gray-100`. The fixed-height scrolling boxes (State Presence and Action Log) use `h-32 sm:h-48` (not `max-h-*`) so they hold a constant height and scroll internally rather than growing the layout per generation. Empty-state placeholders inside fixed-height boxes (Event Request, State Presence, Action Log) use `h-full flex items-center text-xs` — left-aligned, vertically centered. Keep new panels consistent with these.
 
 - **`guided-scenarios.tsx`** — Step-by-step guided scenarios with hints, quizzes, and `instructionBullets`. Receives persisted completed-scenario list from `app/page.tsx`. Embeds `ProcessSchedulingSimulation` via `ref` to drive it with keyboard shortcuts. Also exports `SCENARIO_SHORTCUT_DEFS`.
 

@@ -563,7 +563,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   <div className="flex-shrink-0 rounded-lg p-2 bg-gray-100">
                     <div ref={eventQueueRef} className="h-[10.3125rem] overflow-y-auto space-y-2 event-queue-container rounded-lg p-2">
                       {activeEvents.length === 0 ? (
-                        <div className="text-center text-muted-foreground py-4 sm:py-8 text-xs">No active events</div>
+                        <div className="h-full flex items-center text-muted-foreground text-xs">No active events</div>
                       ) : (
                         activeEvents.map((event) => (
                           <div
@@ -747,7 +747,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 </div>
                 <div className="h-32 sm:h-48 overflow-y-auto space-y-2 text-xs rounded-lg p-2 bg-gray-100">
                   {Object.keys(simulationState.metrics.stateTimeTracking).length === 0 ? (
-                    <p className="text-xs text-muted-foreground">No process data yet. State presence appears once a process exists and the clock advances.</p>
+                    <p className="h-full flex items-center text-xs text-muted-foreground">No process data yet. State presence appears once a process exists and the clock advances.</p>
                   ) : (
                     Object.entries(simulationState.metrics.stateTimeTracking).map(([processName, times]) => {
                       const t = times as { ready: number; running: number; blocked: number }
@@ -795,7 +795,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 </div>
                 <div className="h-32 sm:h-48 overflow-y-auto space-y-1 action-log-container rounded-lg p-2 bg-gray-100">
                   {simulationState.actionLog.length === 0 ? (
-                    <div className="text-center text-muted-foreground py-4 text-xs sm:text-sm">
+                    <div className="h-full flex items-center text-muted-foreground text-xs">
                       No activity yet. Actions and events appear here once the sandbox is in use.
                     </div>
                   ) : (
