@@ -29,7 +29,32 @@
       "Bash(systemd-run --user --scope -p MemoryMax=2G -p MemorySwapMax=0 bun run build)",
       "Bash(curl -s http://localhost:3005/_next/static/chunks/0o4j78b627iuo.css)",
       "Bash(pkill -f \"next start\")",
-      "Bash(pkill -f \"PORT=3005\")"
+      "Bash(pkill -f \"PORT=3005\")",
+      "Bash(bunx next *)",
+      "Bash(systemctl --user is-system-running)",
+      "Bash(bash -c 'ulimit -v 500000; echo capped-ok')",
+      "Bash(xargs du -h)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} in %{time_total}s\\\\n\" --max-time 90 http://localhost:3001/)",
+      "Bash(systemctl --user status 'plc-dev-*.scope')",
+      "Bash(systemctl --user reset-failed 'plc-*')",
+      "Bash(systemd-run --user --scope -p MemoryMax=2G -p MemorySwapMax=0 bash -c 'exec pnpm build')",
+      "Bash(echo \"exit=$?\")",
+      "Bash(npx next *)",
+      "Bash(rm -f /tmp/claude-1000/-home-vlabs-Downloads-vlabs-pushed-Process-life-cycle-exp/cb26d611-fd6c-4830-8118-8609d2bbf3d0/scratchpad/devwp.log)",
+      "Bash(systemd-run --user --scope -u plc-devwp -p MemoryMax=2G -p MemorySwapMax=0 bash -c 'exec npx next dev --webpack --port 3002')",
+      "Bash(echo \"launched $!\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} in %{time_total}s\\\\n\" --max-time 90 http://localhost:3002/)",
+      "Bash(systemctl --user status plc-devwp.scope)",
+      "Bash(git worktree *)",
+      "Bash(cp app/globals.css /tmp/claude-1000/-home-vlabs-Downloads-vlabs-pushed-Process-life-cycle-exp/cb26d611-fd6c-4830-8118-8609d2bbf3d0/scratchpad/globals.bak)",
+      "Bash(printf '@import \"tailwindcss\";\\\\n')",
+      "Bash(rm -f /tmp/claude-1000/-home-vlabs-Downloads-vlabs-pushed-Process-life-cycle-exp/cb26d611-fd6c-4830-8118-8609d2bbf3d0/scratchpad/devmin.log)",
+      "Bash(systemd-run --user --scope -u plc-min -p MemoryMax=2G -p MemorySwapMax=0 bash -c 'exec npx next dev --turbopack --port 3004')",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} in %{time_total}s\\\\n\" --max-time 90 http://localhost:3004/)",
+      "Bash(systemctl --user status plc-min.scope)",
+      "Bash(systemctl --user stop plc-min.scope plc-devwp.scope)",
+      "Bash(cp /tmp/claude-1000/-home-vlabs-Downloads-vlabs-pushed-Process-life-cycle-exp/cb26d611-fd6c-4830-8118-8609d2bbf3d0/scratchpad/globals.bak app/globals.css)",
+      "Bash(systemctl --user stop 'plc-fix.scope' 'plc-devwp.scope' 'plc-min.scope' 'plc-pre.scope')"
     ]
   }
 }

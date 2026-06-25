@@ -381,3 +381,39 @@ Removed the "Move Process" button panel. Processes are now moved by **dragging a
 A quick **tap still selects** a chip (keyboard `G/I/R/T` still work); a real drag suppresses the trailing click. Moves still pass through engine validation.
 **Files:** `components/process-scheduling-simulation.tsx`
 **Commit:** `feat(sandbox): drag-and-drop process moves (mouse + touch)`
+
+---
+
+## Round 4 — Dev-server OOM Root Cause: Turbopack, not the UI
+
+### Symptom
+`pnpm dev` froze the whole machine (RAM filled, swap thrashed, OS killed the browser/terminal). Earlier rounds blamed the Refactoring-UI pass (darkened `--border` OKLCH token, info-icon/tooltip changes) and treated it as a "circular CSS token / ResizeObserver loop." That diagnosis was wrong — the freeze persisted on clean, committed code when running the dev server.
+
+### Root cause
+The OOM is **Turbopack's dev compiler** on this **Next.js 16.2.0 / Node v26** setup — it balloons past 2 GB while compiling `/`. It is **not** related to any UI/CSS change.
+
+Reproduced under a hard memory cap (`systemd-run --user --scope -p MemoryMax=2G -p MemorySwapMax=0`), so a runaway only killed its own scope:
+
+| Command | Result |
+|---|---|
+| `next dev` (Turbopack) | **oom-kill at 2 GB** compiling `/` |
+| `next dev` (Turbopack), `globals.css` stripped to just `@import "tailwindcss";` | **still oom-kill at 2 GB** — exonerates all CSS |
+| `next dev --webpack` | HTTP 200, memory flat ~0.7–1 GB across requests |
+| `next build` (Turbopack) | clean in ~1.6 s |
+
+Stripping the stylesheet to one line still OOMs, and `next build` uses Turbopack yet compiles the identical code fine. The only variable that flips OOM→stable is the **Turbopack dev path**. Earlier verification passed because it used the production build, which never exercises that path.
+
+### Fix
+Pin the dev server to the webpack compiler:
+
+```diff
+- "dev": "next dev",
++ "dev": "next dev --webpack",
+```
+
+Verified via the real `pnpm dev` under the cap: server stays up, all requests 200, memory stable at 705 MB (peak 862 MB), no oom-kill. Static review confirmed the committed app code is loop-free (no circular `@theme` tokens, no `ResizeObserver`, parent callbacks are `useCallback([])`-stable).
+
+**Note:** to revisit Turbopack later (Next patch, or pinning Node to an LTS — v26 is bleeding-edge), re-test under the memory cap before dropping `--webpack`.
+
+**Files:** `package.json`
+**Commit:** `fix(dev): use webpack dev server — Turbopack dev OOMs on Next 16.2/Node 26`

@@ -5,7 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-pnpm dev        # start Next.js dev server (http://localhost:3000)
+pnpm dev        # start Next.js dev server (webpack) on http://localhost:3000
+                # NOTE: pinned to --webpack on purpose. Turbopack dev OOMs (>2GB,
+                # freezes the machine) on Next 16.2.0 / Node v26 — see Key constraints.
 pnpm build      # production build (TypeScript errors are ignored — see next.config.mjs)
 pnpm start      # serve production build
 pnpm lint       # ESLint
