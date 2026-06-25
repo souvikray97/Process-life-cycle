@@ -560,7 +560,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
 
                   {/* Fixed-height, scrollable event list — does not grow the layout.
                       Height tuned so the box bottom border aligns with the Ready lane bottom. */}
-                  <div className="flex-shrink-0 rounded-lg p-2 bg-gray-50">
+                  <div className="flex-shrink-0 rounded-lg p-2 bg-gray-100">
                     <div ref={eventQueueRef} className="h-[10.3125rem] overflow-y-auto space-y-2 event-queue-container rounded-lg p-2">
                       {activeEvents.length === 0 ? (
                         <div className="text-center text-muted-foreground py-4 sm:py-8 text-xs">No active events</div>
@@ -636,7 +636,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   <p className="text-xs text-muted-foreground -mt-1">Drag a process into another lane to move it.</p>
 
                   {/* CPU lane */}
-                  <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
+                  <div className="rounded-lg p-2 bg-gray-100 overflow-hidden">
                     <h4 className="item-label mb-2 text-green-600">CPU (running)</h4>
                   <div
                     data-lane-state="running"
@@ -651,7 +651,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 </div>
 
                 {/* Ready lane */}
-                <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
+                <div className="rounded-lg p-2 bg-gray-100 overflow-hidden">
                   <h4 className="item-label mb-2 text-sky-600">Ready</h4>
                   <div
                     data-lane-state="ready"
@@ -666,7 +666,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 </div>
 
                 {/* I/O wait lane */}
-                <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
+                <div className="rounded-lg p-2 bg-gray-100 overflow-hidden">
                   <h4 className="item-label mb-2 text-yellow-600">I/O wait</h4>
                   <div
                     data-lane-state="blocked"
@@ -681,7 +681,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 </div>
 
                 {/* Terminated lane */}
-                <div className="rounded-lg p-2 bg-gray-50 overflow-hidden">
+                <div className="rounded-lg p-2 bg-gray-100 overflow-hidden">
                   <h4 className="item-label mb-2 text-red-600">Terminated</h4>
                   <div
                     data-lane-state="terminated"
@@ -746,7 +746,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                   </Tooltip>
                 </div>
                 {Object.keys(simulationState.metrics.stateTimeTracking).length > 0 ? (
-                  <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-2 text-xs rounded-lg p-2 bg-gray-50">
+                  <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-2 text-xs rounded-lg p-2 bg-gray-100">
                     {Object.entries(simulationState.metrics.stateTimeTracking).map(([processName, times]) => {
                       const t = times as { ready: number; running: number; blocked: number }
                       const total = t.ready + t.running + t.blocked
@@ -793,7 +793,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
                 <div className="item-label flex items-center gap-2">
                   Action Log
                 </div>
-                <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-1 action-log-container rounded-lg p-2 bg-gray-50">
+                <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-1 action-log-container rounded-lg p-2 bg-gray-100">
                   {simulationState.actionLog.length === 0 ? (
                     <div className="text-center text-muted-foreground py-4 text-xs sm:text-sm">
                       No activity yet. Actions and events appear here once the sandbox is in use.
@@ -885,7 +885,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
               {/* Invalid Transition Attempts — recorded so the Evaluation engine can score mistakes */}
               <div>
                 <h4 className="item-label mb-2">Invalid Transition Attempts</h4>
-                <div className="rounded-lg p-3 bg-gray-50 space-y-2 max-h-48 overflow-y-auto">
+                <div className="rounded-lg p-3 bg-gray-100 space-y-2 max-h-48 overflow-y-auto">
                   {simulationState.metrics.invalidTransitionLog.length === 0 ? (
                     <p className="text-xs text-muted-foreground">No invalid transitions attempted. Rejected moves are recorded here with the reason.</p>
                   ) : (
@@ -911,7 +911,7 @@ function ProcessSchedulingSimulation({ onEngineReady, onStateChange, shortcutsEn
               {/* State Transition History */}
               <div>
                 <h4 className="item-label mb-2">State Transition History</h4>
-                <div className="rounded-lg p-3 bg-gray-50 space-y-2 max-h-48 overflow-y-auto">
+                <div className="rounded-lg p-3 bg-gray-100 space-y-2 max-h-48 overflow-y-auto">
                   {simulationState.processes.filter((p: SimulationProcess) => p.history.length > 0).length === 0 ? (
                     <p className="text-xs text-muted-foreground">No transitions recorded yet. Each process's path through the life cycle appears here.</p>
                   ) : (
